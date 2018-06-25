@@ -24,6 +24,7 @@ namespace unlucky_larry.Controllers
                 .Where(_ => _.GroupName.Equals(group))
                 .Select(_ => new QuestionData
                 {
+                    Id = _.Id,
                     Title = _.Title,
                     Answers = _.Answers
                         .Select(a => new  AnswerData
@@ -33,6 +34,12 @@ namespace unlucky_larry.Controllers
                         }).ToList()
                 })
                 .ToList();
+        }
+
+        [HttpPost]
+        public void Answers(List<int> answers)
+        {
+            
         }
     }
 }
