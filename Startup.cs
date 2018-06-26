@@ -29,7 +29,7 @@ namespace unlucky_larry
             //services.AddDbContext<QuestionContext>(opt =>
             //    opt.UseMemoryCache("Questions"));
             services.AddDbContext<QuestionContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("QuestionContext")));
+                options.UseSqlite(Configuration.GetConnectionString("QuestionContext")));
 
             services.AddMvc();
 

@@ -23,6 +23,20 @@ namespace unlucky_larry.Controllers
         public IEnumerable<Question> Get()
         {
             return _context.Questions
+                .Include(_ => _.Answers)
+                .Select(_ => new Question
+                {
+                    Id = _.Id,
+                    GroupName = _.GroupName,
+                    Title = _.Title,
+                    Answers = _.Answers.Select(a => new Answer
+                    {
+                        Id = a.Id,
+                        IsCorrect = a.IsCorrect,
+                        QuestionId = a.QuestionId,
+                        Title = a.Title
+                    }).ToList()
+                })
                 .ToList();
         }
 
