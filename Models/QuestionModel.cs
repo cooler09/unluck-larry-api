@@ -2,10 +2,10 @@
 
 namespace unlucky_larry.Models
 {
-    public class QuestionData
+    public class QuestionModel
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public List<AnswerData> Answers { get; set; }
+        public List<AnswerModel> Answers { get; set; }
     }
 }

@@ -16,18 +16,18 @@ namespace unlucky_larry.Controllers
         }
         // GET
         [HttpGet]
-        public List<QuestionData> GetQuestionsForGroup(string group)
+        public List<QuestionModel> GetQuestionsForGroup(string group)
         {
 
             return _context.Questions
                 .Include(_ => _.Answers)
                 .Where(_ => _.GroupName.Equals(group))
-                .Select(_ => new QuestionData
+                .Select(_ => new QuestionModel
                 {
                     Id = _.Id,
                     Title = _.Title,
                     Answers = _.Answers
-                        .Select(a => new  AnswerData
+                        .Select(a => new  AnswerModel
                         {
                             Title = a.Title,
                             Id = a.Id
@@ -37,9 +37,29 @@ namespace unlucky_larry.Controllers
         }
 
         [HttpPost]
-        public void Answers(List<int> answers)
+        public int Answers(UserAnswerModel model)
         {
-            
+            var user = _context.Users.Find(model.UserId);
+            foreach (var a in model.Answers)
+            {
+                var answer = _context.Answers.Find(a);
+                _context.UserAnswers.Add(new UserAnswer
+                {
+                    User = user,
+                    Answer = answer
+                });
+            }
+
+            _context.SaveChanges();
+
+            var score = _context.UserAnswers
+                .Include(_ => _.Answer)
+                .Include(_ => _.Answer.Question)
+                .Include(_ => _.User)
+                .Count(_ => _.User.Id == user.Id
+                            && _.Answer.Id == _.Answer.Question.CorrectAnswer);   
+
+            return score;
         }
     }
 }

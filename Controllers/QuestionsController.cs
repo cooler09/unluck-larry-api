@@ -32,7 +32,6 @@ namespace unlucky_larry.Controllers
                     Answers = _.Answers.Select(a => new Answer
                     {
                         Id = a.Id,
-                        IsCorrect = a.IsCorrect,
                         QuestionId = a.QuestionId,
                         Title = a.Title
                     }).ToList()
@@ -50,27 +49,40 @@ namespace unlucky_larry.Controllers
 
         // POST api/<controller>
         [HttpPost]
-        public void Post([FromBody]Question question)
+        public void Post([FromBody]QuestionAddModel question)
         {
-            _context.Questions.Add(question);
+            var q = question.ToDomain();
+            _context.Questions.Add(q);
             _context.SaveChanges();
+            q.CorrectAnswer = q.Answers[question.CorrectAnswer].Id;
+            _context.Questions.Update(q);
+            _context.SaveChanges();
+
         }
 
         // PUT api/<controller>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]Question question)
-        {
-            _context.Questions.Update(question);
-            _context.SaveChanges();
-        }
-
-        // DELETE api/<controller>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-            var question = _context.Questions.Find(id);
-            _context.Questions.Remove(question);
-            _context.SaveChanges();
-        }
+//        [HttpPut("{id}")]
+//        public void Put(int id, [FromBody]Question question)
+//        {
+//            _context.Questions.Update(question);
+//            _context.SaveChanges();
+//        }
+//
+//        // DELETE api/<controller>/5
+//        [HttpDelete("{id}")]
+//        public void Delete(int id)
+//        {
+//            var question = _context.Questions.First(_ => _.Id == id);
+//            var answersIds = question.Answers.Select(_ => _.Id);
+//            foreach (var a in answersIds)
+//            {
+//                var answer = _context.Answers.Find(a);
+//                _context.Answers.Remove(answer);
+//            }
+//
+//            _context.SaveChanges();        
+//            _context.Questions.Remove(question);
+//            _context.SaveChanges();
+//        }
     }
 }

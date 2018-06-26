@@ -1,8 +1,8 @@
 ﻿namespace unlucky_larry.Models
 {
-    public class AnswerData
+    public class User
     {
         public int Id { get; set; }
-        public string Title { get; set; }
+        public string Username { get; set; }
     }
 }
