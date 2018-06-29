@@ -61,7 +61,9 @@ namespace unlucky_larry.Controllers
                     correctAnswerId = _.CorrectAnswer,
                     groupName = GroupName.PopularGirl,
                     title = _.Title,
-                    answers = _.Answers.Select(a => new AnswerVM
+                    answers = _.Answers
+                        .OrderBy(r => Guid.NewGuid())
+                        .Select(a => new AnswerVM
                     {
                         id = a.Id,
                         title = a.Title
