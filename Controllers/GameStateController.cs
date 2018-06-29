@@ -54,7 +54,7 @@ namespace unlucky_larry.Controllers
                 .Include(_ => _.CorrectAnswer)
                 .Where(_ => _.GroupName == grp)
                 .OrderBy(r => Guid.NewGuid())
-                .Take(10)
+                .Take(3)
                 .Select(_ => new QuestionVM
                 {
                     id = _.Id,
